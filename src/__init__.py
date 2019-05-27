@@ -30,7 +30,7 @@ from celery import Celery
 from config import config
 
 celery = Celery(__name__,
-                broker=os.environ.get('CELERY_BROKER_URL', 'redis://'))
+                broker=os.environ.get('REDIS_URL', 'redis://'))
 celery.config_from_object('celeryconfig')
 
 def create_app(config_name=None):
