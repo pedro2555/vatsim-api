@@ -27,3 +27,4 @@ app = create_app(os.environ.get('APP_CONFIG', 'production'))
 app.app_context().push()
 
 # import modules with celery tasks
+from src import tasks
