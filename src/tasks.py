@@ -34,24 +34,7 @@ def update():
     Args:
         resource (str): The endpoint name being accessed
     """
-    # verify if an update is due
-    db = app.data.driver.db['dataversion']
-    dataversion = db.find_one()
     now = datetime.utcnow()
-    if dataversion:
-        _last_update = dataversion['_updated'].replace(tzinfo=None)
-    else:
-        _last_update = now - timedelta(seconds=60)
-    seconds_since_update = (now - _last_update).total_seconds()
-    if seconds_since_update < 60 and not app.debug:
-        return
-    if dataversion:
-        dataversion['_updated'] = now
-        db.save(dataversion)
-    else:
-        db.insert_one({'_created': now, '_updated': now})
-
-    # fetch and save data
     status = VatsimStatus.from_url()
     def save(existing, new):
         new['_updated'] = now
