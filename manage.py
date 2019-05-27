@@ -45,6 +45,12 @@ def run(host, port, debug):
         subprocess.call(['gunicorn', 'wsgi:app', '--bind', f'{host}:{port}', '--log-file=-'])
 
 @cli.command()
+def clock():
+    """Runs the AP scheduler."""
+    from clock import sched
+    sched.start()
+
+@cli.command()
 def worker():
     """Runs a background celery worker."""
     subprocess.call(['celery', 'worker', '-A', 'worker.celery', '--loglevel=info'])

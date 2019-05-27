@@ -32,5 +32,3 @@ sched = BlockingScheduler()
 def update_vatsim():
     from src.tasks import update
     update.apply_async()
-
-sched.start()
