@@ -20,8 +20,11 @@ along with VATSIM API.  If not, see <http://www.gnu.org/licenses/>.
 Schedules some tasks to be run.
 
 """
+
+# pylint: disable=C0103, C0111
+# C0103 doesn't conform to UPPER_CASE naming style
+# C0111: Missing function docstring (missing-docstring)
 from apscheduler.schedulers.blocking import BlockingScheduler
-from wsgi import app
 
 sched = BlockingScheduler()
 
