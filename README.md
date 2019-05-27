@@ -2,6 +2,43 @@
 
 A RESTfull HTTP API providing VATSIM data.
 
+## Application Stack
+
+All stack programs run at Heroku, the REST API is available at
+[vatsim-api.herokuapp.com](https://vatsim-api.herokuapp.com/).
+
+### HTTP API
+
+A Python-EVE based API exposing the client visible layer, exposes database information to clients
+with a mongodb query syntax.
+
+#### Starts with
+
+```bash
+python manage.py run
+```
+
+### Celery Background Worker
+
+A Celery application that listens for tasks to be executed.
+
+#### Starts with
+
+```bash
+python manage.py worker
+```
+
+#### Clock
+
+An APScheduler application responsible to dispatch recorrent tasks.
+
+#### Starts with
+
+```bash
+python manage.py clock
+```
+
+
 ## Development Environment
 
 ### Requirements
@@ -52,8 +89,8 @@ As mentioned before, you need both MongoDB and Redis instances runnnig locally. 
 step if the instances are already running.
 
 ```bash
-sudo service  mongodb start
-sudo service  redis start
+sudo service mongodb start
+sudo service redis start
 ```
 
 Start the app
