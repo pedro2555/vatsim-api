@@ -86,8 +86,7 @@ DOMAIN = {
 	'voice_servers': copy(default),
 	'clients': clients,
 	'servers': copy(default),
-	'prefiles': copy(default),
-	'firs': firs
+	'prefiles': copy(default)
 }
 
 # We want to seamlessy run our API both locally and on Heroku. If running on
