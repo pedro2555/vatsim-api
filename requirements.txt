@@ -1,0 +1,8 @@
+celery==4.3.0
+Click==7.0
+coverage==4.5.3
+Eve==0.9.1
+gunicorn==19.9.0
+pylint==2.3.1
+python-dotenv==0.10.2
+redis==3.2.1

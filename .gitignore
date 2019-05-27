@@ -1,0 +1,16 @@
+# enviroment variables for local development
+*.env
+
+# virtualenv
+venv/
+bin/
+lib/
+share/
+pip-selfcheck.json
+
+# python binaries
+__pycache__
+*.pyc
+
+# test coverage report
+.coverage
