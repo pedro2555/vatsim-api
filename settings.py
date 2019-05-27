@@ -91,7 +91,7 @@ DOMAIN = {
 
 # We want to seamlessy run our API both locally and on Heroku. If running on
 # Heroku, sensible DB connection settings are stored in environment variables.
-MONGO_URI = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/vatsim-api'
+MONGO_URI = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/vatsim-api')
 
 X_DOMAINS = '*'
 DATE_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
