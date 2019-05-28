@@ -1,43 +1,26 @@
 # VATSIM API
 
-A RESTfull HTTP API providing VATSIM data.
+We provide full VATSIM statistics for connected clients and servers via a public RESTfull API.
 
-## Application Stack
+All data we collect is publicly available from [VATSIM](https://status.vatsim.net/). On top of that information we expose some other tools for developers to query this information.
 
-All stack programs run at Heroku, the REST API is available at
-[vatsim-api.herokuapp.com](https://vatsim-api.herokuapp.com/).
+Our features:
+ * Location information complies with the [GEOJson](https://tools.ietf.org/html/rfc7946) format;
+ * Location history for all connected clients;
+ * MongoDB query syntax.
 
-### HTTP API
+## How it Works
 
-A Python-EVE based API exposing the client visible layer, exposes database information to clients
-with a mongodb query syntax.
+### Data Collection
 
-#### Starts with
+We schedule data collection from VATSIM, roughly, every minute. This is done by a 'clock process' leveraging the [APScheduler](https://apscheduler.readthedocs.io/en/latest/) library. This process schedules update operations to be run by a worker.
 
-```bash
-python manage.py run
-```
+Data collection and transformations is executed by a 'worker process' using [Celery](http://www.celeryproject.org/). This process listens for scheduled jobs and executes them.
 
-### Celery Background Worker
+A job queue is provided by [Redis](https://redis.io/).
+All results are stored in a [MongoDB](https://www.mongodb.com/) database.
 
-A Celery application that listens for tasks to be executed.
-
-#### Starts with
-
-```bash
-python manage.py worker
-```
-
-#### Clock
-
-An APScheduler application responsible to dispatch recorrent tasks.
-
-#### Starts with
-
-```bash
-python manage.py clock
-```
-
+On top of the same database we added an HTTP layer exposing the REST API, using [Python-Eve](https://docs.python-eve.org/en/stable/)
 
 ## Development Environment
 
