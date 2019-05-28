@@ -18,6 +18,7 @@ along with VATSIM API.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import sys
+import logging
 from datetime import datetime
 from urllib.request import urlopen
 
@@ -85,7 +86,8 @@ class VatsimStatus():
 
 def _split_to_dict(keys, line, *, separator=':'):
     values = line.split(separator)
-    assert len(keys) == len(values), f'{len(keys)} != {len(values)} for {line}'
+    if len(keys) != len(values):
+        logging.info(f'unparseable line {len(keys)} != {len(values)} for {line}')
     return {key: value for key, value in zip(keys, values)}
 
 def _split_voice_servers(line):
