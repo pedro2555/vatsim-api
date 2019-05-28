@@ -63,24 +63,6 @@ clients = {
                 'callsign_text': [ ('callsign', 'text') ]
 	}
 }
-firs_schema = {
-	'icao': {
-		'type': 'string'
-	},
-	'name': {'type': 'string'},
-	'location': {'type': 'point'},
-	'boundaries': {'type': 'polygon'},
-	'callsigns': {
-		'type': 'list',
-        'schema': {'type': 'string'}
-	}
-}
-firs = {
-	'schema': firs_schema,
-	'resource_methods': ['GET', 'POST'],
-	'item_methods': ['GET', 'PATCH', 'PUT'],
-	'pagination': False
-}
 
 DOMAIN = {
 	'voice_servers': copy(default),
