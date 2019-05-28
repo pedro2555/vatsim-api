@@ -39,6 +39,7 @@ clients_schema = {
 	'realname': {'type': 'string'},
 	'clienttype': {'type': 'string'},
 	'location': {'type': 'point'},
+	'location_history': {'type': 'linestring'},
 	'groundspeed': {'type': 'number'},
 	'altitude': {'type': 'number'},
 	'boundaries': {

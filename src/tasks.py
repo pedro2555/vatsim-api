@@ -22,7 +22,7 @@ Async tasks definitions.
 """
 # pylint: disable=C0103
 # C0103 doesn't conform to UPPER_CASE naming style
-from datetime import datetime, timedelta
+from datetime import datetime
 from wsgi import app
 from .vatsim import VatsimStatus
 from . import celery
@@ -56,6 +56,15 @@ def update():
             'callsign': item['callsign'],
             'cid': item['cid'],
             'clienttype': item['clienttype']})
+        try:
+            item['location_history'] = existing['location_history']
+        except (KeyError, TypeError):
+            item['location_history'] = {'type': 'linestring', 'coordinates': list()}
+        try:
+            if item['location'] != existing['location']:
+                item['location_history']['coordinates'].append(item['location'])
+        except (KeyError, TypeError):
+            pass
         save(existing, item)
     db.remove({'_updated': {'$lt': now}})
     db = app.data.driver.db['servers']
