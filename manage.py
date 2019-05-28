@@ -66,6 +66,16 @@ def lint():
     lint = subprocess.call(['pylint', 'src'])
     sys.exit(lint)
 
+@cli.group()
+def tasks():
+    """Manually schedules tasks."""
+
+@tasks.command()
+def update():
+    """Schedules a database a update."""
+    from src.tasks import update
+    update.apply_async()
+
 @cli.command()
 @click.option('--only', help='Run only the specified test.')
 def test(only=None):
