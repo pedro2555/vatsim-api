@@ -16,7 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with VATSIM API.  If not, see <http://www.gnu.org/licenses/>.
 """
-
+# pylint: disable=W1203
+# W1203: Use % formatting in logging functions and pass the % parameters as arguments
 import sys
 import logging
 from datetime import datetime
