@@ -67,3 +67,4 @@ def update():
     for item in status.prefile:
         existing = db.find_one({'callsign': item['callsign'], 'cid': item['cid']})
         save(existing, item)
+    db.remove({'_updated': {'$lt': now}})
