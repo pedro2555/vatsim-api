@@ -71,10 +71,16 @@ def tasks():
     """Manually schedules tasks."""
 
 @tasks.command()
-def update():
-    """Schedules a database a update."""
-    from src.tasks import update
-    update.apply_async()
+def update_status():
+    """Schedules a Vatsim status update."""
+    from src.tasks import update_status
+    update_status.apply_async()
+
+@tasks.command()
+def update_events():
+    """Schedules a Vateud events update."""
+    from src.tasks import update_events
+    update_events.apply_async()
 
 @cli.command()
 @click.option('--only', help='Run only the specified test.')

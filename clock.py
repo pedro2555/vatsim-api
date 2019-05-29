@@ -26,9 +26,14 @@ Schedules some tasks to be run.
 # C0111: Missing function docstring (missing-docstring)
 from apscheduler.schedulers.blocking import BlockingScheduler
 
+from src.tasks import update_status, update_events
+
 sched = BlockingScheduler()
 
 @sched.scheduled_job('interval', minutes=1)
 def update_vatsim():
-    from src.tasks import update
-    update.apply_async()
+    update_status.apply_async()
+
+@sched.scheduled_job('cron', hour='0,13')
+def update_vatsim():
+    update_events.apply_async()

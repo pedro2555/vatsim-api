@@ -80,6 +80,24 @@ controllers = {
 		'source': 'clients',
 		'filter': {'clienttype': 'ATC'}
 	},
+events_schema = {
+	# this is just used for definitely avoid duplicated records
+	# and quite a nice way to keep track of things overall
+	'vateud_id': {
+			'type': 'integer',
+			'unique': True
+	},
+	'title': {'type': 'string'},
+	'subtitle': {'type': 'string'},
+	'description': {'type': 'string'},
+	'airports': {'type': 'list'},
+	'banner_url': {'type': 'string'},
+	'starts': {'type': 'datetime'},
+	'ends': {'type': 'datetime'}
+}
+events = {
+	'schema': events_schema,
+	'item_title': 'event',
 	'resource_methods': ['GET'],
 	'item_methods': ['GET'],
 	'pagination': False
@@ -91,7 +109,8 @@ DOMAIN = {
 	'pilots': pilots,
 	'controllers': controllers,
 	'servers': copy(default),
-	'prefile': copy(default)
+	'prefile': copy(default),
+	'events': events
 }
 
 # We want to seamlessy run our API both locally and on Heroku. If running on
