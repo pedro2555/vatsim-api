@@ -72,6 +72,7 @@ pilots = {
 	},
 	'resource_methods': ['GET'],
 	'item_methods': ['GET'],
+	'pagination': False
 }
 controllers = {
 	'schema': clients_schema,
@@ -81,6 +82,7 @@ controllers = {
 	},
 	'resource_methods': ['GET'],
 	'item_methods': ['GET'],
+	'pagination': False
 }
 
 DOMAIN = {
