@@ -20,21 +20,19 @@ along with VATSIM API.  If not, see <http://www.gnu.org/licenses/>.
 Schedules some tasks to be run.
 
 """
-
 # pylint: disable=C0103, C0111
 # C0103 doesn't conform to UPPER_CASE naming style
 # C0111: Missing function docstring (missing-docstring)
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from src.vatsim.tasks import update as update_status
-from src.events.tasks import update as update_events
-
 sched = BlockingScheduler()
 
 @sched.scheduled_job('interval', minutes=1)
 def update_vatsim():
-    update_status.apply_async()
+    from src.vatsim.tasks import update
+    update.apply_async()
 
 @sched.scheduled_job('cron', hour='0,13')
-def update_vatsim():
-    update_events.apply_async()
+def update_events():
+    from src.events.tasks import update
+    update.apply_async()
