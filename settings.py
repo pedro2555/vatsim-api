@@ -64,10 +64,32 @@ clients = {
         'callsign_text': [ ('callsign', 'text') ]
 	}
 }
+pilots = {
+	'schema': clients_schema,
+	'datasource': {
+		'source': 'clients',
+		'filter': {'clienttype': 'PILOT'}
+	},
+	'resource_methods': ['GET'],
+	'item_methods': ['GET'],
+	'pagination': False
+}
+controllers = {
+	'schema': clients_schema,
+	'datasource': {
+		'source': 'clients',
+		'filter': {'clienttype': 'ATC'}
+	},
+	'resource_methods': ['GET'],
+	'item_methods': ['GET'],
+	'pagination': False
+}
 
 DOMAIN = {
 	'voice_servers': copy(default),
 	'clients': clients,
+	'pilots': pilots,
+	'controllers': controllers,
 	'servers': copy(default),
 	'prefile': copy(default)
 }
