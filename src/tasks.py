@@ -56,15 +56,17 @@ def update():
             'callsign': item['callsign'],
             'cid': item['cid'],
             'clienttype': item['clienttype']})
-        try:
-            item['location_history'] = existing['location_history']
-        except (KeyError, TypeError):
-            item['location_history'] = {'type': 'linestring', 'coordinates': list()}
-        try:
-            if item['location'] != existing['location']:
-                item['location_history']['coordinates'].append(item['location'])
-        except (KeyError, TypeError):
-            pass
+        # keep location history
+        if item['clienttype'] == 'PILOT':
+            try:
+                item['location_history'] = existing['location_history']
+            except (KeyError, TypeError):
+                item['location_history'] = {'type': 'linestring', 'coordinates': list()}
+            try:
+                if item['location'] != existing['location']:
+                    item['location_history']['coordinates'].append(item['location'])
+            except (KeyError, TypeError):
+                pass
         save(existing, item)
     db.remove({'_updated': {'$lt': now}})
     db = app.data.driver.db['servers']
