@@ -23,10 +23,7 @@ Async tasks definitions.
 # pylint: disable=C0103,W1203
 # C0103 doesn't conform to UPPER_CASE naming style
 # W1203: Use % formatting in logging functions and pass the % parameters as arguments
-import logging
-import json
 from datetime import datetime
-import requests
 from wsgi import app
 from .vatsim import VatsimStatus
 from .. import celery
