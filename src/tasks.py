@@ -33,10 +33,7 @@ from . import celery
 
 @celery.task()
 def update_status():
-    """Updates vatsim status information if older than a predefined time (60 seconds).
-
-    Args:
-        resource (str): The endpoint name being accessed
+    """Updates vatsim status.
     """
     now = datetime.utcnow()
     status = VatsimStatus.from_url()
@@ -87,6 +84,8 @@ def update_status():
 
 @celery.task()
 def update_events():
+    """Updates VATEUD events.
+    """
     # load events from the server
     r = requests.get('http://api.vateud.net/events.json')
 
@@ -95,17 +94,17 @@ def update_events():
         logging.info(f'update_events: vateud API returned {r.status_code}')
 
     date_format = r'%Y-%m-%dT%H:%M:%SZ'
-    events_collection = app.data.driver.db['events']
+    now = datetime.now()
+    db = app.data.driver.db['events']
     events = json.loads(r.text)
     for event in events:
         # early exit on existing events (not sure if they update the things or
         # not, but theres no etag, or any other evident versioning scheme, so
         # we're skiping on updated records until that is clarified)
-        if events_collection.find_one({'vateud_id': event['id']}):
+        if db.find_one({'vateud_id': event['id']}):
             continue
 
-        now = datetime.now()
-        events_collection.insert_one({
+        db.insert_one({
             '_created': now,
             '_updated': now,
             'vateud_id': event['id'],
@@ -117,3 +116,4 @@ def update_events():
             'starts': datetime.strptime(event['starts'], date_format),
             'ends': datetime.strptime(event['ends'], date_format)
         })
+    db.remove({'ends': {'$lt': now}})
