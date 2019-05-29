@@ -70,17 +70,21 @@ def lint():
 def tasks():
     """Manually schedules tasks."""
 
-@tasks.command()
-def update_status():
-    """Schedules a Vatsim status update."""
-    from src.tasks import update_status
-    update_status.apply_async()
+@tasks.group()
+def update():
+    """Schedule update tasks"""
 
-@tasks.command()
-def update_events():
+@update.command()
+def vatsim():
+    """Schedules a Vatsim status update."""
+    from src.vatsim.tasks import update
+    update.apply_async()
+
+@update.command()
+def events():
     """Schedules a Vateud events update."""
-    from src.tasks import update_events
-    update_events.apply_async()
+    from src.events.tasks import update
+    update.apply_async()
 
 @cli.command()
 @click.option('--only', help='Run only the specified test.')

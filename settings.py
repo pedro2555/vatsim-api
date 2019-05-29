@@ -80,6 +80,10 @@ controllers = {
 		'source': 'clients',
 		'filter': {'clienttype': 'ATC'}
 	},
+	'resource_methods': ['GET'],
+	'item_methods': ['GET'],
+	'pagination': False
+}
 events_schema = {
 	# this is just used for definitely avoid duplicated records
 	# and quite a nice way to keep track of things overall

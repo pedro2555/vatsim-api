@@ -28,62 +28,10 @@ import json
 from datetime import datetime
 import requests
 from wsgi import app
-from .vatsim import VatsimStatus
-from . import celery
+from .. import celery
 
 @celery.task()
-def update_status():
-    """Updates vatsim status.
-    """
-    now = datetime.utcnow()
-    status = VatsimStatus.from_url()
-    def save(existing, new):
-        new['_updated'] = now
-        if existing:
-            existing.update(new)
-            db.save(existing)
-        else:
-            new['_created'] = now
-            db.insert_one(new)
-
-    db = app.data.driver.db['voice_servers']
-    for item in status.voice_servers:
-        existing = db.find_one({'hostname_or_IP': item['hostname_or_IP']})
-        save(existing, item)
-    db.remove({'_updated': {'$lt': now}}) # purge offline clients
-    db = app.data.driver.db['clients']
-    for item in status.clients:
-        existing = db.find_one({
-            'callsign': item['callsign'],
-            'cid': item['cid'],
-            'clienttype': item['clienttype']})
-        # keep location history
-        if item['clienttype'] == 'PILOT':
-            try:
-                item['location_history'] = existing['location_history']
-            except (KeyError, TypeError):
-                item['location_history'] = {'type': 'linestring', 'coordinates': list()}
-            try:
-                if item['location'] != existing['location']:
-                    item['location_history']['coordinates'].append(item['location'])
-            except (KeyError, TypeError):
-                pass
-        save(existing, item)
-    db.remove({'_updated': {'$lt': now}})
-    db = app.data.driver.db['servers']
-    for item in status.servers:
-        existing = db.find_one({'hostname_or_IP': item['hostname_or_IP']})
-        save(existing, item)
-    db.remove({'_updated': {'$lt': now}})
-    db = app.data.driver.db['prefile']
-    for item in status.prefile:
-        existing = db.find_one({'callsign': item['callsign'], 'cid': item['cid']})
-        save(existing, item)
-    db.remove({'_updated': {'$lt': now}})
-
-
-@celery.task()
-def update_events():
+def update():
     """Updates VATEUD events.
     """
     # load events from the server

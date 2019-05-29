@@ -26,7 +26,8 @@ Schedules some tasks to be run.
 # C0111: Missing function docstring (missing-docstring)
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from src.tasks import update_status, update_events
+from src.vatsim.tasks import update as update_status
+from src.events.tasks import update as update_events
 
 sched = BlockingScheduler()
 
