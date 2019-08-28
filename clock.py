@@ -27,7 +27,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('interval', seconds=120)
+@sched.scheduled_job('interval', seconds=180)
 def update_vatsim():
     from src.vatsim.tasks import update
     update.apply_async()
