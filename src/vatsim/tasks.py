@@ -35,16 +35,19 @@ def update():
     now = datetime.utcnow()
     status = VatsimStatus.from_url()
     def save(existing, new):
-        new['_updated'] = now
-        lat, lng = new['location']
-        if -180 > lat > 180 or -180 > lng > 180:
-            del new['location']
-        if existing:
-            existing.update(new)
-            db.save(existing)
-        else:
-            new['_created'] = now
-            db.insert_one(new)
+        try:
+            new['_updated'] = now
+            lat, lng = new['location']
+            if -180 > lat > 180 or -180 > lng > 180:
+                del new['location']
+            if existing:
+                existing.update(new)
+                db.save(existing)
+            else:
+                new['_created'] = now
+                db.insert_one(new)
+        except ValueError as crap:
+            raise ValueError(new) from crap
 
     db = app.data.driver.db['voice_servers']
     for item in status.voice_servers:
