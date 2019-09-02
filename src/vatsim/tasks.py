@@ -40,7 +40,7 @@ def update():
             lat, lng = new['location']
             if -180 > lat > 180 or -180 > lng > 180:
                 del new['location']
-        except ValueError:
+        except (ValueError, KeyError):
             pass # no location
         if existing:
             existing.update(new)
