@@ -34,11 +34,13 @@ def update():
     """
     now = datetime.utcnow()
     status = VatsimStatus.from_url()
-    def save(existing, new):
-        new['_updated'] = now
+    def remove_location(new):
         lat, lng = new['location']
         if -180 > lat > 180 or -180 > lng > 180:
             del new['location']
+
+    def save(existing, new):
+        new['_updated'] = now
         if existing:
             existing.update(new)
             db.save(existing)
@@ -68,6 +70,7 @@ def update():
                     item['location_history']['coordinates'].append(item['location'])
             except (KeyError, TypeError):
                 pass
+        remove_location(item)
         save(existing, item)
     db.remove({'_updated': {'$lt': now}})
     db = app.data.driver.db['servers']
