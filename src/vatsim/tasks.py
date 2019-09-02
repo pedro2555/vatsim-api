@@ -38,6 +38,7 @@ def update():
         lat, lng = new['location']
         if -180 > lat > 180 or -180 > lng > 180:
             del new['location']
+        return new
 
     def save(existing, new):
         new['_updated'] = now
@@ -70,8 +71,7 @@ def update():
                     item['location_history']['coordinates'].append(item['location'])
             except (KeyError, TypeError):
                 pass
-        remove_location(item)
-        save(existing, item)
+        save(existing, remove_location(item))
     db.remove({'_updated': {'$lt': now}})
     db = app.data.driver.db['servers']
     for item in status.servers:
