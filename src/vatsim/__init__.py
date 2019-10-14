@@ -19,4 +19,8 @@ along with VATSIM API.  If not, see <http://www.gnu.org/licenses/>.
 Module for handling VATSIM status response.
 
 """
-from .vatsim import VatsimStatus
+STATUS_SERVERS = [
+    'http://us.data.vatsim.net/vatsim-data.txt',
+    'http://eu.data.vatsim.net/vatsim-data.txt',
+    'http://apac.data.vatsim.net/vatsim-data.txt'
+]
