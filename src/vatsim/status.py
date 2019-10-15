@@ -1,8 +1,9 @@
 from random import choice
+import logging
 import re
 import requests
 
-from vatsim import STATUS_SERVERS
+from . import STATUS_SERVERS
 
 def get_status_info(status_file=None):
     """Returns the update time for the status file an iterable of all status entities.
@@ -42,13 +43,15 @@ def _iter_status(lines):
 def _split_to_dict(keys, lines, *, separator=':'):
     for line in lines:
         line = line.strip()
-        if line[0] == '!':
+        if line == '' or line[0] == '!':
             return
         values = line.split(separator)
         if len(keys) != len(values):
             logging.info(f'unparseable line {len(keys)} != {len(values)} for {line}')
-        yield {key[0]: key[1](value) if isinstance(key, tuple) else key: value
-                 for key, value in zip(keys, values)}
+        values = [key[1](value) if isinstance(key, tuple) else value
+                  for key, value in zip(keys, values)]
+        keys = [key[0] if isinstance(key, tuple) else key for key in keys]
+        yield {key: value for key, value in zip(keys, values)}
 
 def _split_voice_servers(lines):
     keys = (
